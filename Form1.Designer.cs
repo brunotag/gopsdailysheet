@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
-            this.webViewGops = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -40,7 +39,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.webViewGops)).BeginInit();
+            this.webViewGops = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -48,19 +47,8 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webViewTracking)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webViewGops)).BeginInit();
             this.SuspendLayout();
-            // 
-            // webViewGops
-            // 
-            this.webViewGops.CreationProperties = null;
-            this.webViewGops.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webViewGops.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webViewGops.Location = new System.Drawing.Point(6, 7);
-            this.webViewGops.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            this.webViewGops.Name = "webViewGops";
-            this.webViewGops.Size = new System.Drawing.Size(902, 296);
-            this.webViewGops.TabIndex = 1;
-            this.webViewGops.ZoomFactor = 1D;
             // 
             // tabControl1
             // 
@@ -80,23 +68,22 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Menu;
+            this.tabPage1.BackColor = System.Drawing.Color.DimGray;
             this.tabPage1.Controls.Add(this.webViewGops);
             this.tabPage1.ForeColor = System.Drawing.SystemColors.Desktop;
             this.tabPage1.Location = new System.Drawing.Point(4, 45);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.tabPage1.Size = new System.Drawing.Size(914, 310);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "GOPS Daily Sheet";
             // 
             // tabPage3
             // 
-            this.tabPage3.BackColor = System.Drawing.SystemColors.Menu;
+            this.tabPage3.BackColor = System.Drawing.Color.DimGray;
             this.tabPage3.Controls.Add(this.webViewGopsTracking);
             this.tabPage3.Location = new System.Drawing.Point(4, 45);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(914, 310);
             this.tabPage3.TabIndex = 2;
@@ -116,12 +103,11 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.BackColor = System.Drawing.SystemColors.Menu;
+            this.tabPage2.BackColor = System.Drawing.Color.DimGray;
             this.tabPage2.Controls.Add(this.webViewTracking);
             this.tabPage2.Location = new System.Drawing.Point(4, 45);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.tabPage2.Size = new System.Drawing.Size(914, 310);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Gliding.Net Tracking";
@@ -131,10 +117,10 @@
             this.webViewTracking.CreationProperties = null;
             this.webViewTracking.DefaultBackgroundColor = System.Drawing.Color.White;
             this.webViewTracking.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webViewTracking.Location = new System.Drawing.Point(6, 7);
+            this.webViewTracking.Location = new System.Drawing.Point(0, 0);
             this.webViewTracking.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.webViewTracking.Name = "webViewTracking";
-            this.webViewTracking.Size = new System.Drawing.Size(902, 296);
+            this.webViewTracking.Size = new System.Drawing.Size(914, 310);
             this.webViewTracking.TabIndex = 2;
             this.webViewTracking.ZoomFactor = 1D;
             // 
@@ -183,9 +169,21 @@
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 42);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(157, 42);
             this.closeToolStripMenuItem.Text = "Quit?";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // webViewGops
+            // 
+            this.webViewGops.CreationProperties = null;
+            this.webViewGops.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webViewGops.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webViewGops.Location = new System.Drawing.Point(0, 0);
+            this.webViewGops.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.webViewGops.Name = "webViewGops";
+            this.webViewGops.Size = new System.Drawing.Size(914, 310);
+            this.webViewGops.TabIndex = 1;
+            this.webViewGops.ZoomFactor = 1D;
             // 
             // mainForm
             // 
@@ -205,7 +203,6 @@
             this.Text = "WWGC Tablet";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.mainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.webViewGops)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
@@ -214,13 +211,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.webViewTracking)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webViewGops)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private Microsoft.Web.WebView2.WinForms.WebView2 webViewGops;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -231,6 +228,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webViewGops;
     }
 }
 
