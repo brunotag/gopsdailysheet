@@ -63,5 +63,14 @@ namespace GopsDailySheet
             var selectedBrowser = tabControl1.SelectedTab.Controls.OfType<Microsoft.Web.WebView2.WinForms.WebView2>().First();
             selectedBrowser.Reload();
         }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var response = MessageBox.Show("Are you sure you want to quit?", "Quit?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (response == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
     }
 }
