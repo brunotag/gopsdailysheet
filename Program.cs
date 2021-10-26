@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,9 +15,24 @@ namespace GopsDailySheet
         [STAThread]
         static void Main()
         {
+            if (IsAlreadyRunning())
+            {
+                MessageBox.Show("GopsDailySheet is already running.", "Max one instance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new mainForm());
+        }
+
+        static bool IsAlreadyRunning()
+        {
+            const string appName = "GopsDailySheet";
+            bool createdNew;
+
+            var mutex = new Mutex(true, appName, out createdNew);
+
+            return !createdNew;
         }
     }
 }
