@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="jpeg.ico" />
+    <Content Include="refresh.png" />
     <Content Include="WWGC-avatar-blue.jpg" />
   </ItemGroup>
   <ItemGroup>

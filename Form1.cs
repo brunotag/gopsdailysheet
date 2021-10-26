@@ -37,5 +37,31 @@ namespace GopsDailySheet
                "https://gliding.net.nz/tracking"
             );
         }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (InhibitDoubleClickResizeOnTitleBar(ref m))
+            {
+                return;
+            }
+            base.WndProc(ref m);
+        }
+
+        private bool InhibitDoubleClickResizeOnTitleBar(ref Message m)
+        {
+            const int WM_NCLBUTTONDBLCLK = 0x00A3; //double click on a title bar a.k.a. non-client area of the form
+            if (m.Msg == WM_NCLBUTTONDBLCLK)
+            {
+                m.Result = IntPtr.Zero;
+                return true;
+            }
+            return false;
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            var selectedBrowser = tabControl1.SelectedTab.Controls.OfType<Microsoft.Web.WebView2.WinForms.WebView2>().First();
+            selectedBrowser.Reload();
+        }
     }
 }
