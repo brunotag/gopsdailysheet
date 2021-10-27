@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GopsDailySheet.Config;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -18,38 +19,79 @@ namespace GopsDailySheet
             InitializeComponent();
         }
 
+        #region LoadPresentationFromAppConfig
+
         private void mainForm_Load(object sender, EventArgs e)
         {
-            webViewGops.Source = new Uri(
-                string.Format(
-                    "https://www.glidingops.com/DailySheet?org={0}&key={1}",
-                    System.Configuration.ConfigurationSettings.AppSettings.Get("org"),
-                    System.Configuration.ConfigurationSettings.AppSettings.Get("key")
-                )
-            );
-            webViewGops.ZoomFactor = double.Parse(System.Configuration.ConfigurationSettings.AppSettings.Get("gopsZoomFactor"));
-
-            webViewGopsTracking.Source = new Uri(
-               "https://www.glidingops.com/wgc"
-            );
-
-            webViewTracking.Source = new Uri(
-               "https://gliding.net.nz/tracking"
-            );
+            CleanUpTabs();
+            var tabsConfigSection = ConfigurationManager.GetSection("tabsConfigs") as TabsConfigSection;
+            BuildTabsFromConfig(tabsConfigSection.Tabs);
+            var fontSize = float.Parse(ConfigurationManager.AppSettings.Get("fontSize") ?? "18");
+            ReplaceFontSize(fontSize);
         }
 
+        private void CleanUpTabs()
+        {
+            this.tabControl1.TabPages.Clear();
+        }
+
+        private void BuildTabsFromConfig(TabsElementCollection tabs)
+        {
+            var counter = 0;
+            foreach(var tab in tabs.OfType<TabElement>())
+            {
+                var tabPage = new TabPage();
+                tabPage.BackColor = Color.DimGray;
+                tabPage.ForeColor = SystemColors.Desktop;                
+                tabPage.Padding = new Padding(4);
+                //tabPage.Location = new System.Drawing.Point(4, 45);
+                //tabPage.Size = new System.Drawing.Size(914, 310);
+                tabPage.TabIndex = counter;
+                tabPage.Name = "tab" + tab.Name;
+                tabPage.Text = tab.Caption;
+
+                var browser = new Microsoft.Web.WebView2.WinForms.WebView2();
+                ((ISupportInitialize)(browser)).BeginInit();
+                browser.CreationProperties = null;
+                browser.DefaultBackgroundColor = Color.White;
+                browser.Dock = DockStyle.Fill;
+                browser.Location = new Point(0, 0);
+                browser.Margin = new Padding(6, 7, 6, 7);
+                browser.Name = "webView" + tab.Name;
+                //this.webViewGopsTracking.TabIndex = 3;
+                browser.ZoomFactor = tab.ZoomFactor ?? 1D;
+                browser.Source = new Uri(tab.Url);
+                
+                tabControl1.Controls.Add(tabPage);            
+                tabPage.Controls.Add(browser);
+                ((ISupportInitialize)(browser)).EndInit();
+                counter++;
+            }
+        }
+
+        private void ReplaceFontSize(float fontSize)
+        {
+            tabControl1.Font = tabControl1.Font.CloneWithNewSize(fontSize);
+            refreshToolStripButton.Font = refreshToolStripButton.Font.CloneWithNewSize(fontSize);
+            toolStripDropDownButton1.Font = toolStripDropDownButton1.Font.CloneWithNewSize(fontSize);
+            this.Font = this.Font.CloneWithNewSize(fontSize);
+        }
+
+        #endregion
+
+        #region InhibitResizeByDoubleClick
         protected override void WndProc(ref Message m)
         {
-            if (InhibitDoubleClickResizeOnTitleBar(ref m))
+            if (ShouldInhibitBecauseDoubleClickOnTitleBar(ref m))
             {
                 return;
             }
             base.WndProc(ref m);
         }
 
-        private bool InhibitDoubleClickResizeOnTitleBar(ref Message m)
+        private static bool ShouldInhibitBecauseDoubleClickOnTitleBar(ref Message m)
         {
-            const int WM_NCLBUTTONDBLCLK = 0x00A3; //double click on a title bar a.k.a. non-client area of the form
+            const int WM_NCLBUTTONDBLCLK = 0x00A3;
             if (m.Msg == WM_NCLBUTTONDBLCLK)
             {
                 m.Result = IntPtr.Zero;
@@ -57,8 +99,11 @@ namespace GopsDailySheet
             }
             return false;
         }
+        #endregion
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        #region FunctionalityByEventHandlers
+
+        private void refreshToolStripButton_Click(object sender, EventArgs e)
         {
             var selectedBrowser = tabControl1.SelectedTab.Controls.OfType<Microsoft.Web.WebView2.WinForms.WebView2>().First();
             selectedBrowser.Reload();
@@ -72,5 +117,7 @@ namespace GopsDailySheet
                 Application.Exit();
             }
         }
+
+        #endregion
     }
 }

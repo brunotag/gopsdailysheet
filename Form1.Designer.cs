@@ -31,23 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.webViewGopsTracking = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.webViewTracking = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.refreshToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.webViewGops = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webViewGopsTracking)).BeginInit();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webViewTracking)).BeginInit();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webViewGops)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -55,74 +46,24 @@
             this.tabControl1.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.Buttons;
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(922, 359);
+            this.tabControl1.Size = new System.Drawing.Size(1043, 489);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage1.Controls.Add(this.webViewGops);
-            this.tabPage1.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.tabPage1.Location = new System.Drawing.Point(4, 45);
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 43);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(914, 310);
+            this.tabPage1.Size = new System.Drawing.Size(1035, 442);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "GOPS Daily Sheet";
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage3.Controls.Add(this.webViewGopsTracking);
-            this.tabPage3.Location = new System.Drawing.Point(4, 45);
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(914, 310);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "GOPS Tracking";
-            // 
-            // webViewGopsTracking
-            // 
-            this.webViewGopsTracking.CreationProperties = null;
-            this.webViewGopsTracking.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webViewGopsTracking.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webViewGopsTracking.Location = new System.Drawing.Point(0, 0);
-            this.webViewGopsTracking.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            this.webViewGopsTracking.Name = "webViewGopsTracking";
-            this.webViewGopsTracking.Size = new System.Drawing.Size(914, 310);
-            this.webViewGopsTracking.TabIndex = 3;
-            this.webViewGopsTracking.ZoomFactor = 1D;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.Color.DimGray;
-            this.tabPage2.Controls.Add(this.webViewTracking);
-            this.tabPage2.Location = new System.Drawing.Point(4, 45);
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(914, 310);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Gliding.Net Tracking";
-            // 
-            // webViewTracking
-            // 
-            this.webViewTracking.CreationProperties = null;
-            this.webViewTracking.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webViewTracking.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webViewTracking.Location = new System.Drawing.Point(0, 0);
-            this.webViewTracking.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            this.webViewTracking.Name = "webViewTracking";
-            this.webViewTracking.Size = new System.Drawing.Size(914, 310);
-            this.webViewTracking.TabIndex = 2;
-            this.webViewTracking.ZoomFactor = 1D;
+            this.tabPage1.Text = "ExampleTabPage";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // toolStrip1
             // 
@@ -130,66 +71,64 @@
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Right;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
+            this.refreshToolStripButton,
             this.toolStripDropDownButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(922, 0);
+            this.toolStrip1.Location = new System.Drawing.Point(1043, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(54, 359);
+            this.toolStrip1.Size = new System.Drawing.Size(54, 489);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // refreshToolStripButton
             // 
-            this.toolStripButton1.AutoSize = false;
-            this.toolStripButton1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.toolStripButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.toolStripButton1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(40, 220);
-            this.toolStripButton1.Text = "R\nE\nF\nR\nE\nS\nH";
-            this.toolStripButton1.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
-            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.refreshToolStripButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.refreshToolStripButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.refreshToolStripButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
+            this.refreshToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStripButton.Image")));
+            this.refreshToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.refreshToolStripButton.Name = "refreshToolStripButton";
+            this.refreshToolStripButton.Size = new System.Drawing.Size(51, 268);
+            this.refreshToolStripButton.Text = "R\nE\nF\nR\nE\nS\nH";
+            this.refreshToolStripButton.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+            this.refreshToolStripButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.refreshToolStripButton.Click += new System.EventHandler(this.refreshToolStripButton_Click);
             // 
             // toolStripDropDownButton1
             // 
             this.toolStripDropDownButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton1.AutoToolTip = false;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeToolStripMenuItem});
-            this.toolStripDropDownButton1.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripDropDownButton1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(51, 44);
-            this.toolStripDropDownButton1.Text = "Quit";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(51, 172);
+            this.toolStripDropDownButton1.Text = "Q\nU\nI\nT";
+            this.toolStripDropDownButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripDropDownButton1.ToolTipText = "Quit";
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(157, 42);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 36);
             this.closeToolStripMenuItem.Text = "Quit?";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // webViewGops
+            // label1
             // 
-            this.webViewGops.CreationProperties = null;
-            this.webViewGops.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webViewGops.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webViewGops.Location = new System.Drawing.Point(0, 0);
-            this.webViewGops.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            this.webViewGops.Name = "webViewGops";
-            this.webViewGops.Size = new System.Drawing.Size(914, 310);
-            this.webViewGops.TabIndex = 1;
-            this.webViewGops.ZoomFactor = 1D;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(170, 168);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(671, 31);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "***Browser goes here, loaded at runtime from config***";
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(976, 359);
+            this.ClientSize = new System.Drawing.Size(1097, 489);
             this.ControlBox = false;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
@@ -205,13 +144,9 @@
             this.Load += new System.EventHandler(this.mainForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.webViewGopsTracking)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.webViewTracking)).EndInit();
+            this.tabPage1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webViewGops)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,16 +154,12 @@
 
         #endregion
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private Microsoft.Web.WebView2.WinForms.WebView2 webViewTracking;
-        private System.Windows.Forms.TabPage tabPage3;
-        private Microsoft.Web.WebView2.WinForms.WebView2 webViewGopsTracking;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton refreshToolStripButton;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private Microsoft.Web.WebView2.WinForms.WebView2 webViewGops;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Label label1;
     }
 }
 
