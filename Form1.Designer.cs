@@ -31,11 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.refreshToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripDropDownButtonQuit = new System.Windows.Forms.ToolStripDropDownButton();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
+            this.toolStripDropDownButtonPanic = new System.Windows.Forms.ToolStripDropDownButton();
+            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -52,7 +55,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1043, 489);
+            this.tabControl1.Size = new System.Drawing.Size(1087, 738);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -60,10 +63,19 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Location = new System.Drawing.Point(4, 43);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1035, 442);
+            this.tabPage1.Size = new System.Drawing.Size(1079, 691);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "ExampleTabPage";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(170, 168);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(671, 31);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "***Browser goes here, loaded at runtime from config***";
             // 
             // toolStrip1
             // 
@@ -72,10 +84,12 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.refreshToolStripButton,
-            this.toolStripDropDownButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(1043, 0);
+            this.toolStripDropDownButtonQuit,
+            this.toolStripSeparator1,
+            this.toolStripDropDownButtonPanic});
+            this.toolStrip1.Location = new System.Drawing.Point(1087, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(54, 489);
+            this.toolStrip1.Size = new System.Drawing.Size(54, 738);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -93,42 +107,60 @@
             this.refreshToolStripButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.refreshToolStripButton.Click += new System.EventHandler(this.refreshToolStripButton_Click);
             // 
-            // toolStripDropDownButton1
+            // toolStripDropDownButtonQuit
             // 
-            this.toolStripDropDownButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripDropDownButton1.AutoToolTip = false;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButtonQuit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripDropDownButtonQuit.AutoToolTip = false;
+            this.toolStripDropDownButtonQuit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeToolStripMenuItem});
-            this.toolStripDropDownButton1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(51, 172);
-            this.toolStripDropDownButton1.Text = "Q\nU\nI\nT";
-            this.toolStripDropDownButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripDropDownButton1.ToolTipText = "Quit";
+            this.toolStripDropDownButtonQuit.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripDropDownButtonQuit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonQuit.Image")));
+            this.toolStripDropDownButtonQuit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonQuit.Name = "toolStripDropDownButtonQuit";
+            this.toolStripDropDownButtonQuit.Size = new System.Drawing.Size(51, 172);
+            this.toolStripDropDownButtonQuit.Text = "Q\nU\nI\nT";
+            this.toolStripDropDownButtonQuit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripDropDownButtonQuit.ToolTipText = "Quit";
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 36);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 36);
             this.closeToolStripMenuItem.Text = "Quit?";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // label1
+            // toolStripDropDownButtonPanic
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(170, 168);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(671, 31);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "***Browser goes here, loaded at runtime from config***";
+            this.toolStripDropDownButtonPanic.AutoToolTip = false;
+            this.toolStripDropDownButtonPanic.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.restartToolStripMenuItem});
+            this.toolStripDropDownButtonPanic.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripDropDownButtonPanic.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonPanic.Image")));
+            this.toolStripDropDownButtonPanic.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonPanic.Name = "toolStripDropDownButtonPanic";
+            this.toolStripDropDownButtonPanic.Size = new System.Drawing.Size(51, 204);
+            this.toolStripDropDownButtonPanic.Text = "P\nA\nN\nI\nC";
+            this.toolStripDropDownButtonPanic.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripDropDownButtonPanic.ToolTipText = "Panic";
+            // 
+            // restartToolStripMenuItem
+            // 
+            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(200, 36);
+            this.restartToolStripMenuItem.Text = "Magic Fix?";
+            this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 10);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(51, 6);
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1097, 489);
+            this.ClientSize = new System.Drawing.Size(1141, 738);
             this.ControlBox = false;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
@@ -156,10 +188,13 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton refreshToolStripButton;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonQuit;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonPanic;
+        private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

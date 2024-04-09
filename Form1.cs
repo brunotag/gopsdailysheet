@@ -73,7 +73,7 @@ namespace GopsDailySheet
         {
             tabControl1.Font = tabControl1.Font.CloneWithNewSize(fontSize);
             refreshToolStripButton.Font = refreshToolStripButton.Font.CloneWithNewSize(fontSize);
-            toolStripDropDownButton1.Font = toolStripDropDownButton1.Font.CloneWithNewSize(fontSize);
+            toolStripDropDownButtonQuit.Font = toolStripDropDownButtonQuit.Font.CloneWithNewSize(fontSize);
             this.Font = this.Font.CloneWithNewSize(fontSize);
         }
 
@@ -119,5 +119,14 @@ namespace GopsDailySheet
         }
 
         #endregion
+
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var response = MessageBox.Show("Are you sure you want to restart?", "Restart?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (response == DialogResult.Yes)
+            {
+                Program.Restart();
+            }
+        }
     }
 }

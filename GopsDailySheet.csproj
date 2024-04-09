@@ -54,10 +54,10 @@
     <ApplicationIcon>jpeg.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C1887B336969E28C7AB459DBA358B116C41CF725</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F5A294000C9CCB546852D62254DB3890AA312B4B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>GopsDailySheet_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>GopsDailySheet_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -134,6 +134,7 @@
   <ItemGroup>
     <Content Include="exit.png" />
     <Content Include="jpeg.ico" />
+    <Content Include="panic.jpg" />
     <Content Include="refresh.png" />
     <Content Include="WWGC-avatar-blue.jpg" />
   </ItemGroup>

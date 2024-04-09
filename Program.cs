@@ -25,14 +25,23 @@ namespace GopsDailySheet
             Application.Run(new mainForm());
         }
 
+        private static Mutex _mutex;
         static bool IsAlreadyRunning()
         {
             const string appName = "GopsDailySheet";
             bool createdNew;
 
-            var mutex = new Mutex(true, appName, out createdNew);
+            _mutex = new Mutex(true, appName, out createdNew);
 
             return !createdNew;
+        }
+
+        internal static void Restart()
+        {
+            _mutex.ReleaseMutex();
+            _mutex.Close();
+            _mutex.Dispose();
+            Application.Restart();
         }
     }
 }
