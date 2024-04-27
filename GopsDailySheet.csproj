@@ -134,7 +134,6 @@
   <ItemGroup>
     <Content Include="exit.png" />
     <Content Include="jpeg.ico" />
-    <Content Include="panic.jpg" />
     <Content Include="refresh.png" />
     <Content Include="WWGC-avatar-blue.jpg" />
   </ItemGroup>
