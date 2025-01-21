@@ -23,22 +23,38 @@ namespace GopsDailySheet
 
         private void mainForm_Load(object sender, EventArgs e)
         {
-            CleanUpTabs();
+            this.tabControl1.TabPages.Clear();
             var tabsConfigSection = ConfigurationManager.GetSection("tabsConfigs") as TabsConfigSection;
             BuildTabsFromConfig(tabsConfigSection.Tabs);
+            tabControl1.Selecting += TabControl1_Selecting;
+            tabControl1.Deselected += TabControl1_Deselected;
             var fontSize = float.Parse(ConfigurationManager.AppSettings.Get("fontSize") ?? "18");
             ReplaceFontSize(fontSize);
         }
 
-        private void CleanUpTabs()
+        private void TabControl1_Deselected(object sender, TabControlEventArgs e)
         {
-            this.tabControl1.TabPages.Clear();
+            TabElement tabConfig = (TabElement)e.TabPage.Tag;
+            if (tabConfig.UnloadOnLostFocus != null && tabConfig.UnloadOnLostFocus.Value == true)
+            {
+                e.TabPage.Controls.OfType<Microsoft.Web.WebView2.WinForms.WebView2>().First().Dispose();
+                e.TabPage.Controls.Clear();
+            }
         }
 
-        private void BuildTabsFromConfig(TabsElementCollection tabs)
+        private void TabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            TabElement tabConfig = (TabElement)e.TabPage.Tag;
+            if (tabConfig.UnloadOnLostFocus != null && tabConfig.UnloadOnLostFocus.Value == true)
+            {
+                e.TabPage.Controls.Add(GetBrowserControl(tabConfig));
+            }
+        }
+
+        private void BuildTabsFromConfig(TabsElementCollection tabsConfig)
         {
             var counter = 0;
-            foreach(var tab in tabs.OfType<TabElement>())
+            foreach(var tabConfig in tabsConfig.OfType<TabElement>())
             {
                 var tabPage = new TabPage();
                 tabPage.BackColor = Color.DimGray;
@@ -47,26 +63,36 @@ namespace GopsDailySheet
                 //tabPage.Location = new System.Drawing.Point(4, 45);
                 //tabPage.Size = new System.Drawing.Size(914, 310);
                 tabPage.TabIndex = counter;
-                tabPage.Name = "tab" + tab.Name;
-                tabPage.Text = tab.Caption;
+                tabPage.Name = "tab" + tabConfig.Name;
+                tabPage.Text = tabConfig.Caption;
+                tabControl1.Controls.Add(tabPage);
 
-                var browser = new Microsoft.Web.WebView2.WinForms.WebView2();
-                ((ISupportInitialize)(browser)).BeginInit();
-                browser.CreationProperties = null;
-                browser.DefaultBackgroundColor = Color.White;
-                browser.Dock = DockStyle.Fill;
-                browser.Location = new Point(0, 0);
-                browser.Margin = new Padding(6, 7, 6, 7);
-                browser.Name = "webView" + tab.Name;
-                //this.webViewGopsTracking.TabIndex = 3;
-                browser.ZoomFactor = tab.ZoomFactor ?? 1D;
-                browser.Source = new Uri(tab.Url);
-                
-                tabControl1.Controls.Add(tabPage);            
-                tabPage.Controls.Add(browser);
-                ((ISupportInitialize)(browser)).EndInit();
+                tabPage.Tag = tabConfig;
+
+                if (tabConfig.UnloadOnLostFocus == null || tabConfig.UnloadOnLostFocus.Value == false)
+                {
+                    tabPage.Controls.Add(GetBrowserControl(tabConfig));
+                }
+
                 counter++;
             }
+        }
+
+        private Control GetBrowserControl(TabElement tabConfig)
+        {
+            var browser = new Microsoft.Web.WebView2.WinForms.WebView2();
+            ((ISupportInitialize)(browser)).BeginInit();
+            browser.CreationProperties = null;
+            browser.DefaultBackgroundColor = Color.White;
+            browser.Dock = DockStyle.Fill;
+            browser.Location = new Point(0, 0);
+            browser.Margin = new Padding(6, 7, 6, 7);
+            browser.Name = "webView" + tabConfig.Name;
+            //this.webViewGopsTracking.TabIndex = 3;
+            browser.ZoomFactor = tabConfig.ZoomFactor ?? 1D;
+            browser.Source = new Uri(tabConfig.Url);
+            ((ISupportInitialize)(browser)).EndInit();
+            return browser;
         }
 
         private void ReplaceFontSize(float fontSize)

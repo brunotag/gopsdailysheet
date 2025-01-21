@@ -30,5 +30,11 @@ namespace GopsDailySheet.Config
             get { return (double?)this["zoomFactor"]; }
             set { this["zoomFactor"] = value; }
         }
+        [ConfigurationProperty("unloadOnLostFocus", IsRequired = false)]
+        public bool? UnloadOnLostFocus
+        {
+            get { return (bool?)this["unloadOnLostFocus"]; }
+            set { this["value"] = value; }
+        }
     }
 }
