@@ -25,7 +25,8 @@ jobs:
       - name: Create a zip file
         run: |
           mkdir publish
-          zip -r publish/my-app.zip app/publish/
+          Compress-Archive -Path app\publish\* -DestinationPath publish\my-app.zip
+
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
