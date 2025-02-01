@@ -6,6 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5F8EE137-80B7-4E3C-A432-3D2F79C2B896}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.github\workflows\clickonce.yml = .github\workflows\clickonce.yml
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GopsDailySheet", "app\GopsDailySheet.csproj", "{B9DD1691-90DB-4F05-A209-95A7DC119419}"
