@@ -22,12 +22,17 @@ jobs:
       - name: Build and Publish ClickOnce
         run: msbuild /target:Publish /p:Configuration=Release /p:PublishDir="publish/" 
 
+      - name: Create a zip file
+        run: |
+          mkdir publish
+          zip -r publish/my-app.zip app/publish/
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
 
         with:
           files: |
-            app/publish/**
+            publish/**
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
