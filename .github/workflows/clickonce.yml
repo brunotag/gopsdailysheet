@@ -1,0 +1,31 @@
+name: Publish ClickOnce
+
+on:
+  push:
+    tags:
+      - "v*.*.*"  # Runs only when a new version tag is pushed
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Restore NuGet Packages
+        run: nuget restore GopsDailySheet.sln
+
+      - name: Build and Publish ClickOnce
+        run: msbuild /target:Publish /p:Configuration=Release /p:PublishDir="publish/"
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            publish/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
