@@ -13,7 +13,6 @@
     {
         private static readonly string updateUrl = "https://github.com/brunotag/gopsdailysheet/releases/latest/download/latest.json";
         private static readonly string downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update.zip");
-        private static readonly string extractPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update");
 
         public static void CheckForUpdates()
         {
@@ -72,14 +71,22 @@
                 // Get the name of the executable
                 string appName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
 
+                // Define log file path
+                //string logFilePath = Path.Combine(appPath, "update_log.txt");
+
+                // Build the PowerShell command to invoke the script and redirect output
+                string psArguments = $"-NoExit -ExecutionPolicy Bypass -File update.ps1 -AppName \"{appName}\" -ExtractPath \"{appPath}\"";
+                
+                //this trim shouldn't be required.
+                psArguments = psArguments.Trim('\"');
+
                 // Pass the application name and path to the PowerShell script
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = "powershell.exe",
-                    Arguments = $"-ExecutionPolicy Bypass -File update.ps1 -AppName \"{appName}\" -ExtractPath \"{appPath}\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
+                    Arguments = psArguments,
+                    WorkingDirectory = appPath,
+                    WindowStyle = ProcessWindowStyle.Normal
                 };
 
                 // Start the batch file and close the app
