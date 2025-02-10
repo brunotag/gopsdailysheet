@@ -66,24 +66,26 @@
         {
             try
             {
-                // Get the path of the executing assembly (the running executable)
-                string appPath = AppDomain.CurrentDomain.BaseDirectory;
+                string batchFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update.bat");
 
-                // Get the name of the executable
-                string appName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
-
-                // Pass the application name and path to the PowerShell script
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = $"-ExecutionPolicy Bypass -File update.ps1 -AppName \"{appName}\" -ExtractPath \"{appPath}\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                };
+                // Write a batch script to safely replace files and restart the app
+                File.WriteAllText(batchFilePath, $@"
+                @echo off
+                timeout /t 2 /nobreak >nul
+                del ""{Application.ExecutablePath}""
+                powershell -Command ""Expand-Archive -Path '{downloadPath}' -DestinationPath '{extractPath}' -Force""
+                move /Y ""{extractPath}\*"" ""{AppDomain.CurrentDomain.BaseDirectory}""
+                start """" ""{Path.GetFileName(Application.ExecutablePath)}""
+                del release.zip
+                del update.bat
+                exit");
 
                 // Start the batch file and close the app
-                Process.Start(psi);
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = batchFilePath,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                });
 
                 Application.Exit();
             }
