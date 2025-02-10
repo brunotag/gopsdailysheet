@@ -29,7 +29,8 @@ jobs:
 
       - name: Create latest.json
         run: |
-          echo "{ \"version\": \"${{ github.ref_name }}\", \"download_url\": \"https://github.com/brunotag/gopsdailysheet/releases/latest//download/${{ github.ref_name }}/release.zip\" }" > publish/latest.json
+          printf '{\n  "version": "%s",\n  "download_url": "https://github.com/brunotag/gopsdailysheet/releases/latest/download/%s/release.zip"\n}' \
+          "${{ github.ref_name }}" "${{ github.ref_name }}" > publish/latest.json
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
