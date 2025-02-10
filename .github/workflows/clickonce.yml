@@ -13,13 +13,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Extract Version from Tag
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
-
       - name: Update AssemblyInfo.cs with Version
         run: |
           $assemblyInfoPath = "app/Properties/AssemblyInfo.cs"
-          (Get-Content $assemblyInfoPath) -replace '\[assembly: AssemblyVersion\(".*"\)\]', "[assembly: AssemblyVersion(`"${{ env.VERSION }}`")]"
+          (Get-Content $assemblyInfoPath) -replace '\[assembly: AssemblyVersion\(".*"\)\]', "[assembly: AssemblyVersion(`"${{ github.ref_name }}`")]"
           | Set-Content $assemblyInfoPath
         shell: pwsh
 
@@ -40,8 +37,8 @@ jobs:
       - name: Create latest.json
         run: |
           echo '{' > publish/latest.json
-          echo '  "version": "${{ env.VERSION }}",' >> publish/latest.json
-          echo '  "download_url": "https://github.com/brunotag/gopsdailysheet/releases/latest/download/v${{ env.VERSION }}/release.zip"' >> publish/latest.json
+          echo '  "version": "${{ github.ref_name }}",' >> publish/latest.json
+          echo '  "download_url": "https://github.com/brunotag/gopsdailysheet/releases/latest/download/v${{ github.ref_name }}/release.zip"' >> publish/latest.json
           echo '}' >> publish/latest.json
 
       - name: Upload to GitHub Release
