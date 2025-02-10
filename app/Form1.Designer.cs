@@ -36,9 +36,11 @@
             this.refreshToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownButtonQuit = new System.Windows.Forms.ToolStripDropDownButton();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripDropDownButtonPanic = new System.Windows.Forms.ToolStripDropDownButton();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.lbl_version = new System.Windows.Forms.ToolStripLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -86,7 +88,9 @@
             this.refreshToolStripButton,
             this.toolStripDropDownButtonQuit,
             this.toolStripSeparator1,
-            this.toolStripDropDownButtonPanic});
+            this.toolStripDropDownButtonPanic,
+            this.toolStripSeparator2,
+            this.lbl_version});
             this.toolStrip1.Location = new System.Drawing.Point(1087, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(54, 738);
@@ -125,9 +129,15 @@
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 36);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(145, 36);
             this.closeToolStripMenuItem.Text = "Quit?";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 10);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(51, 6);
             // 
             // toolStripDropDownButtonPanic
             // 
@@ -150,11 +160,15 @@
             this.restartToolStripMenuItem.Text = "Magic Fix?";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // toolStripSeparator2
             // 
-            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(51, 6);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(51, 6);
+            // 
+            // lbl_version
+            // 
+            this.lbl_version.Name = "lbl_version";
+            this.lbl_version.Size = new System.Drawing.Size(51, 0);
             // 
             // mainForm
             // 
@@ -195,6 +209,8 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonPanic;
         private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel lbl_version;
     }
 }
 

@@ -7,6 +7,7 @@ using System.Data;
 using System.Deployment.Application;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,12 +27,14 @@ namespace GopsDailySheet
         {
             this.tabControl1.TabPages.Clear();
             Updater.CheckForUpdates();
+
             var tabsConfigSection = ConfigurationManager.GetSection("tabsConfigs") as TabsConfigSection;
             BuildTabsFromConfig(tabsConfigSection.Tabs);
             tabControl1.Selecting += TabControl1_Selecting;
             tabControl1.Deselected += TabControl1_Deselected;
             var fontSize = float.Parse(ConfigurationManager.AppSettings.Get("fontSize") ?? "18");
             ReplaceFontSize(fontSize);
+            lbl_version.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void TabControl1_Deselected(object sender, TabControlEventArgs e)
