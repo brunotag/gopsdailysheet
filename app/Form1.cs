@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Deployment.Application;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,7 @@ namespace GopsDailySheet
         private void mainForm_Load(object sender, EventArgs e)
         {
             this.tabControl1.TabPages.Clear();
+            Updater.CheckForUpdates();
             var tabsConfigSection = ConfigurationManager.GetSection("tabsConfigs") as TabsConfigSection;
             BuildTabsFromConfig(tabsConfigSection.Tabs);
             tabControl1.Selecting += TabControl1_Selecting;
