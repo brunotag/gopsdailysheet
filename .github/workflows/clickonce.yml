@@ -18,7 +18,7 @@ jobs:
 
       - name: Update AssemblyInfo.cs with Version
         run: |
-          $assemblyInfoPath = "GopsDailySheet/Properties/app/AssemblyInfo.cs"
+          $assemblyInfoPath = "app/Properties/AssemblyInfo.cs"
           (Get-Content $assemblyInfoPath) -replace '\[assembly: AssemblyVersion\(".*"\)\]', "[assembly: AssemblyVersion(`"${{ env.VERSION }}`")]"
           | Set-Content $assemblyInfoPath
         shell: pwsh
