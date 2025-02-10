@@ -39,10 +39,6 @@
                             ApplyUpdate();
                         }
                     }
-                    else
-                    {
-                        MessageBox.Show("Your application is up to date.", "No Updates", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
                 }
             }
             catch (Exception ex)
