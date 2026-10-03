@@ -52,6 +52,15 @@ else {
     $Tag = "v$versionText"
 }
 
+# An already tagged tip means there is nothing new to release, so stop before
+# committing a version bump on top of it: that would only add an empty release.
+# Re-running with the tag that is already on HEAD is still allowed, which is how
+# a release is rebuilt from a tag that was pushed from a working copy.
+$headTags = @(git -C $repoRoot tag --points-at HEAD | Where-Object { $_ -ne $Tag })
+if ($headTags.Count -gt 0) {
+    throw "HEAD is already tagged $($headTags -join ', '), so there is nothing new to release. Commit something first, or pass -Tag $($headTags[0]) to rebuild that release."
+}
+
 $uncommitted = @(git -C $repoRoot status --porcelain | Where-Object { $_ -notmatch 'app/Properties/AssemblyInfo\.cs$' })
 if ($uncommitted.Count -gt 0) {
     Write-Warning "$($uncommitted.Count) uncommitted change(s) will be built into the zip but will not be part of tag $Tag."

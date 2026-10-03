@@ -137,6 +137,9 @@ and builds the zip:
 - **Tags are never moved.** If the tag already exists on another commit, or its commit carries a
   different version, the script stops. If it already exists at `HEAD` with the same version, it is
   reused — that is the case when CI runs on a tag you pushed yourself.
+- **An already tagged tip stops the release.** If `HEAD` carries a tag and you did not name that
+  tag, there is nothing new to ship, so the script stops before committing anything. Commit
+  something first, or name the tag on `HEAD` to rebuild that release.
 - Publishing is left to you, so the tag and its commit go out together:
 
   ```powershell
