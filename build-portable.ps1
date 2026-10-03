@@ -39,16 +39,18 @@ Install (once)
 
 1. Copy this whole folder out of the shared drive onto the tablet,
    for example to C:\Apps\GopsDailySheet. Copying the folder is the install.
-2. Start GopsDailySheet.exe.
+2. Start GopsDailySheet.exe. On this first start it creates
+   GopsDailySheet.exe.config from GopsDailySheet.exe.config.example.
+3. Close the app, edit GopsDailySheet.exe.config, and start it again.
 
 Updating
 
-Close the app, replace this folder with a newer copy from the shared drive,
-then start GopsDailySheet.exe again.
+Close the app, then copy the files of the newer folder over this one.
+Do not delete this folder first: GopsDailySheet.exe.config is yours and
+is never replaced, because releases only ship the .example template.
 
 Notes
 
-- The app never writes to this folder, so it is safe to keep on a shared drive.
 - Tabs, urls and font size are configured in GopsDailySheet.exe.config.
 - Browsing data (cookies, logins, cache) is kept per Windows user in
   %LOCALAPPDATA%\GopsDailySheet.
@@ -97,6 +99,17 @@ try {
     if (-not (Test-Path -LiteralPath $exePath)) {
         throw "Expected $exePath to exist after the build."
     }
+
+    # Ship the config as a template: the installer's own GopsDailySheet.exe.config
+    # must survive copying a new folder over an existing install. The app creates
+    # the real one from this template on first start.
+    $builtConfigPath = "$exePath.config"
+    $configExamplePath = "$exePath.config.example"
+    if (Test-Path -LiteralPath $configExamplePath) {
+        Remove-Item -LiteralPath $configExamplePath -Force
+    }
+    Rename-Item -LiteralPath $builtConfigPath -NewName ([System.IO.Path]::GetFileName($configExamplePath))
+    Write-Host "Shipped config as $([System.IO.Path]::GetFileName($configExamplePath))"
 
     $builtVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($exePath).FileVersion
     Write-AppReadme -Version $builtVersion

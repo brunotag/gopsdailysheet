@@ -20,11 +20,34 @@ namespace GopsDailySheet
                 MessageBox.Show("GopsDailySheet is already running.", "Max one instance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            EnsureConfigFile();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += OnThreadException;
             Application.Run(new mainForm());
+        }
+
+        /// <summary>
+        /// Releases ship GopsDailySheet.exe.config.example so that copying a new
+        /// folder over an existing install never overwrites the user's settings.
+        /// The real config file is therefore created here, on first start, and
+        /// kept from then on.
+        /// </summary>
+        private static void EnsureConfigFile()
+        {
+            string configPath = Application.ExecutablePath + ".config";
+            if (File.Exists(configPath)) { return; }
+
+            string examplePath = configPath + ".example";
+            if (!File.Exists(examplePath)) { return; }
+
+            try
+            {
+                File.Copy(examplePath, configPath);
+            }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
         }
 
         private static void OnThreadException(object sender, ThreadExceptionEventArgs e)

@@ -32,6 +32,22 @@ jobs:
         id: release
         run: ./release.ps1 -Tag "${{ github.event_name == 'push' && github.ref_name || github.event.inputs.tag }}"
 
+      - name: Check the release folder
+        # The app's own config must never ship, or copying a new folder over an
+        # installed tablet would overwrite the settings there.
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $folder = 'artifacts\GopsDailySheet'
+          $config = Join-Path $folder 'GopsDailySheet.exe.config'
+          $example = "$config.example"
+          if (Test-Path -LiteralPath $config) {
+            throw "The build produced $([System.IO.Path]::GetFileName($config)). A release must not ship it."
+          }
+          if (-not (Test-Path -LiteralPath $example)) {
+            throw "The build did not produce $([System.IO.Path]::GetFileName($example)), so the app could not create a config file on first start."
+          }
+          Write-Host "Config ships as $([System.IO.Path]::GetFileName($example)); the app creates the real one on first start."
+
       - name: Fail if this release already exists
         run: |
           $ErrorActionPreference = 'Stop'

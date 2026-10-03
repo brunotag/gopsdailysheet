@@ -28,10 +28,13 @@ Source layout:
 ## Configuration
 
 Everything configurable lives in **`GopsDailySheet.exe.config`**, the file next to
-`GopsDailySheet.exe`. `app/App.config` in the repo is only the template that is copied
-there at build time, so to change tabs on a deployed tablet you edit
-`GopsDailySheet.exe.config` in the app folder. Config is read once at startup, so restart
-the app after editing.
+`GopsDailySheet.exe`. Config is read once at startup, so restart the app after editing.
+
+A release ships that file as **`GopsDailySheet.exe.config.example`**, never as
+`GopsDailySheet.exe.config`. That is what makes updating safe: copying a new folder over an
+existing install has no `GopsDailySheet.exe.config` to overwrite, so the settings on the
+tablet are left alone. On its first start the app finds no config file and creates one from
+the example next to it, and from then on it only ever reads the file it has.
 
 ```xml
 <configSections>
@@ -66,7 +69,8 @@ Each `<add>` inside `<tabs>` becomes one tab:
 | `fontSize` | Font size in points for the tabs and toolbar. Defaults to `18` if the key is missing |
 
 There is no machine-wide or per-user override: the copy of the config inside the app folder
-is the one that is used, which is what makes the folder portable.
+is the one that is used, which is what makes the folder portable. `app/App.config` in the repo
+is the template the build ships as the `.example` file.
 
 ## Deployment
 
@@ -95,19 +99,24 @@ Windows install; if it is missing the app says so on startup with a link to inst
 
 Copy `GopsDailySheet-portable.zip` into the shared Google Drive folder. On the tablet, copy
 the zip out of Drive, unzip it somewhere permanent such as `C:\Apps\GopsDailySheet`, and
-start `GopsDailySheet.exe`. Copying the folder is the whole installation. To update: close
-the app, replace the folder with the newer copy, start it again.
+start `GopsDailySheet.exe`. Copying the folder is the whole installation; on that first start
+the app writes `GopsDailySheet.exe.config` from the shipped `.example`, which is the file to
+edit from then on.
+
+To update: close the app, then copy the files of the newer folder **over** the existing one.
+Do not delete the existing folder first — `GopsDailySheet.exe.config` is the tablet's own and
+is never replaced, so an overwrite keeps the settings while replacing everything else.
 
 Two consequences of this layout are deliberate:
 
-- **Nothing is written inside the app folder.** Browsing data (cookies, logins, cache) is
-  kept per Windows user in `%LOCALAPPDATA%\GopsDailySheet`. The folder therefore survives
-  living on a synced drive or being replaced wholesale.
+- **Only the config is written inside the app folder**, once, on the very first start.
+  Browsing data (cookies, logins, cache) is kept per Windows user in
+  `%LOCALAPPDATA%\GopsDailySheet`, so it is not tied to the folder at all.
 - **`WebView2Loader.dll` ships inside `runtimes\`** for x86, x64 and arm64, so the single
   Any CPU build runs on any of them.
 
-Keep `GopsDailySheet.exe` inside the folder — it needs the DLLs and `GopsDailySheet.exe.config`
-next to it.
+Keep `GopsDailySheet.exe` inside the folder — it needs the DLLs next to it, and it looks for
+`GopsDailySheet.exe.config` (or the `.example` to create it from) in the same folder.
 
 ### Releases and versioning
 
