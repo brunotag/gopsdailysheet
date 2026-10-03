@@ -34,7 +34,7 @@ namespace GopsDailySheet.Config
         public bool? UnloadOnLostFocus
         {
             get { return (bool?)this["unloadOnLostFocus"]; }
-            set { this["value"] = value; }
+            set { this["unloadOnLostFocus"] = value; }
         }
     }
 }
