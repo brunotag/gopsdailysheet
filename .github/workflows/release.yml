@@ -34,10 +34,17 @@ jobs:
 
       - name: Fail if this release already exists
         run: |
+          # gh exits non-zero when there is no such release, and the runner treats
+          # native stderr as a terminating error, so keep going and read the code.
+          $ErrorActionPreference = 'Continue'
           $tag = '${{ steps.release.outputs.tag }}'
-          gh release view --repo $env:GITHUB_REPOSITORY $tag 2>$null
+          if ($tag -notmatch '^v\d+(\.\d+){3}$') {
+            Write-Host "::error::The release script did not report a usable tag (got '$tag')."
+            exit 1
+          }
+          gh release view --repo $env:GITHUB_REPOSITORY $tag 2>&1 | Out-Null
           if ($LASTEXITCODE -eq 0) {
-            Write-Error "A release for $tag already exists and will not be replaced."
+            Write-Host "::error::A release for $tag already exists and will not be replaced."
             exit 1
           }
           Write-Host "No existing release for $tag."
