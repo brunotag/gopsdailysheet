@@ -63,6 +63,7 @@ Requirements
     $text | Set-Content -LiteralPath (Join-Path $appFolder 'README.txt') -Encoding UTF8
 }
 
+$Version = ($Version -replace '^v', '')
 if ($Version -and $Version -notmatch '^\d+(\.\d+){1,3}$') {
     throw "Version must be 1 to 4 dot-separated numbers (e.g. 1.2.5.0), got '$Version'."
 }

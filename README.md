@@ -109,9 +109,44 @@ Two consequences of this layout are deliberate:
 Keep `GopsDailySheet.exe` inside the folder — it needs the DLLs and `GopsDailySheet.exe.config`
 next to it.
 
+### Releases and versioning
+
+`release.ps1` cuts a release. It resolves the version, records it in the app, tags that commit
+and builds the zip:
+
+```powershell
+.\release.ps1                     # next version, bumped from the highest of AssemblyInfo and the latest tag
+.\release.ps1 -Tag v2.1.0.0       # a specific version
+```
+
+- **Version format** is four numbers, tagged as `v<major>.<minor>.<patch>.<build>`, e.g. `v2.0.0.1`.
+  With no `-Tag`, the next version is the higher of the version in `app/Properties/AssemblyInfo.cs`
+  and the latest `v*.*.*.*` tag, with the last number incremented.
+- **The version reaches the app** because the script writes it to `AssemblyInfo.cs` and commits
+  that as its own commit (`bump version to 2.0.0.1`). The tag points at that commit, so the app's
+  displayed version always matches the tag it was built from.
+- **Tags are never moved.** If the tag already exists on another commit, or its commit carries a
+  different version, the script stops. If it already exists at `HEAD` with the same version, it is
+  reused — that is the case when CI runs on a tag you pushed yourself.
+- Publishing is left to you, so the tag and its commit go out together:
+
+  ```powershell
+  git push origin master v2.0.0.1
+  ```
+
+`build-portable.ps1` on its own just builds whatever is in `AssemblyInfo.cs` and touches no git
+state — useful for a quick local test build.
+
 ### GitHub releases
 
-Pushing a tag such as `2.0.1` runs `.github/workflows/release.yml`, which calls the same
-script with the tag as the version and attaches the zip to the GitHub release. Use that zip
-(or build your own) as the file you drop into the Drive folder; the workflow is a convenience,
-not a dependency.
+`.github/workflows/release.yml` runs the same script and attaches the zip to the GitHub release
+for the tag:
+
+- Push a tag (`git push origin master v2.0.0.1`) to trigger it.
+- Or run **Release portable app** manually from the Actions tab; the optional `tag` input selects
+  the version, and leaving it empty bumps to the next one. In that case the workflow commits the
+  version bump, creates the tag and pushes it.
+
+If a release already exists for the tag, the workflow fails rather than replacing it.
+Use the release zip (or one you built yourself) as the file you drop into the Drive folder; the
+workflow is a convenience, not a dependency.

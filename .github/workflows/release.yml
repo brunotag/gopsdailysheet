@@ -3,7 +3,15 @@ name: Release portable app
 on:
   push:
     tags:
-      - "*.*.*"
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release, e.g. v2.0.1.0. Leave empty to bump to the next version."
+        required: false
+
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -12,13 +20,38 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Build portable app
-        run: ./build-portable.ps1 -Version ${{ github.ref_name }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Build release
+        id: release
+        run: ./release.ps1 -Tag "${{ github.event_name == 'push' && github.ref_name || github.event.inputs.tag }}"
+
+      - name: Fail if this release already exists
+        run: |
+          $tag = '${{ steps.release.outputs.tag }}'
+          gh release view --repo $env:GITHUB_REPOSITORY $tag 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Error "A release for $tag already exists and will not be replaced."
+            exit 1
+          }
+          Write-Host "No existing release for $tag."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Push tag
+        run: git push origin "refs/tags/${{ steps.release.outputs.tag }}"
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.release.outputs.tag }}
           files: |
             artifacts/GopsDailySheet-portable.zip
           fail_on_unmatched_files: true
