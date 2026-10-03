@@ -52,6 +52,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
+      - name: Push version commit to master
+        # Manual runs only: the release script committed the version bump on this
+        # runner, and it belongs on the branch so the repo shows what it released.
+        # A tag-push run is already sitting on a commit the user pushed themselves.
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $branch = '${{ github.event.repository.default_branch }}'
+          git push origin "HEAD:$branch"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "::warning::Could not push the version commit to $branch. The release is still published, but master keeps the old version."
+          }
+
       - name: Push tag
         run: git push origin "refs/tags/${{ steps.release.outputs.tag }}"
 
