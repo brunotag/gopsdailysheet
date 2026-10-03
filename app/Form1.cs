@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
-using System.Deployment.Application;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,6 +16,11 @@ namespace GopsDailySheet
 {
     public partial class mainForm : Form
     {
+        private static readonly string userDataFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "GopsDailySheet",
+            "EBWebView");
+
         public mainForm()
         {
             InitializeComponent();
@@ -26,7 +31,6 @@ namespace GopsDailySheet
         private void mainForm_Load(object sender, EventArgs e)
         {
             this.tabControl1.TabPages.Clear();
-            Updater.CheckForUpdates();
 
             var tabsConfigSection = ConfigurationManager.GetSection("tabsConfigs") as TabsConfigSection;
             BuildTabsFromConfig(tabsConfigSection.Tabs);
@@ -87,7 +91,7 @@ namespace GopsDailySheet
         {
             var browser = new Microsoft.Web.WebView2.WinForms.WebView2();
             ((ISupportInitialize)(browser)).BeginInit();
-            browser.CreationProperties = null;
+            browser.CreationProperties = new Microsoft.Web.WebView2.WinForms.CoreWebView2CreationProperties { UserDataFolder = userDataFolder };
             browser.DefaultBackgroundColor = Color.White;
             browser.Dock = DockStyle.Fill;
             browser.Location = new Point(0, 0);
