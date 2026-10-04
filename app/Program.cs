@@ -21,6 +21,7 @@ namespace GopsDailySheet
                 return;
             }
             EnsureConfigFile();
+            Log.Write($"started {typeof(Program).Assembly.GetName().Version} from {Application.ExecutablePath}");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -52,6 +53,8 @@ namespace GopsDailySheet
 
         private static void OnThreadException(object sender, ThreadExceptionEventArgs e)
         {
+            Log.Write(e.Exception);
+
             if (FindWebView2RuntimeException(e.Exception) != null)
             {
                 MessageBox.Show(
@@ -99,9 +102,46 @@ namespace GopsDailySheet
             _mutex.Close();
             _mutex.Dispose();
 
+            Log.Write("restarting");
             string exePath = Process.GetCurrentProcess().MainModule.FileName;
             Process.Start(new ProcessStartInfo(exePath) { WorkingDirectory = Path.GetDirectoryName(exePath) });
             Application.Exit();
+        }
+    }
+
+    /// <summary>
+    /// Appends diagnostics to %LOCALAPPDATA%\GopsDailySheet\app.log, so problems
+    /// on a deployed tablet can be seen without a debugger.
+    /// </summary>
+    internal static class Log
+    {
+        private const int MaxBytes = 512 * 1024;
+
+        private static readonly string path = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "GopsDailySheet",
+            "app.log");
+
+        public static void Write(string message)
+        {
+            try
+            {
+                string folder = Path.GetDirectoryName(path);
+                if (!System.IO.Directory.Exists(folder)) { System.IO.Directory.CreateDirectory(folder); }
+
+                var info = new FileInfo(path);
+                if (info.Exists && info.Length > MaxBytes) { info.Delete(); }
+
+                File.AppendAllText(path, string.Format(
+                    "{0:yyyy-MM-dd HH:mm:ss.fff} [pid {1}] {2}{3}",
+                    DateTime.Now, Process.GetCurrentProcess().Id, message, Environment.NewLine));
+            }
+            catch (Exception) { }
+        }
+
+        public static void Write(Exception exception)
+        {
+            Write(exception == null ? "null exception" : exception.ToString());
         }
     }
 }

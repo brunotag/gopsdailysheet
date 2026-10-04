@@ -162,3 +162,22 @@ for the tag:
 If a release already exists for the tag, the workflow fails rather than replacing it.
 Use the release zip (or one you built yourself) as the file you drop into the Drive folder; the
 workflow is a convenience, not a dependency.
+
+## Diagnostics
+
+The app appends to `%LOCALAPPDATA%\GopsDailySheet\app.log`, keeping only the last 512 KB. One
+line per event, no dialogs, no behaviour change:
+
+| line | meaning |
+| --- | --- |
+| `started <version> from <path>` | app launch, with the version and where it was started from |
+| the exception text | an unhandled exception, with its full stack trace |
+| `gained foreground` / `deactivated` | the app window taking and losing foreground |
+| `lost foreground to <process> (pid n) "<window title>"` | **which** process ended up in front instead |
+| `<tab> wants a new window: <uri>` | a page asked to open a window, which takes the foreground |
+| `<tab> browser process failed: <kind>, exit code n` | that tab's browser process died |
+
+The `lost foreground to ...` line is what settles "the app lost focus by itself": it names the
+process that did it, whether that is a notification, another app, or the terminal you were testing
+from. To read the file on the tablet, turn on `View → Show → Hidden items` in File Explorer and go
+to `This PC → Local Disk (C:) → Users → <you> → AppData → Local → GopsDailySheet → app.log`.

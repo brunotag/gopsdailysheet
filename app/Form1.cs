@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,10 +23,75 @@ namespace GopsDailySheet
             "GopsDailySheet",
             "EBWebView");
 
+        private readonly System.Windows.Forms.Timer focusWatcher = new System.Windows.Forms.Timer();
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern int GetWindowText(IntPtr window, StringBuilder text, int maxCount);
+
         public mainForm()
         {
             InitializeComponent();
+            focusWatcher.Tick += focusWatcher_Tick;
         }
+
+        #region FocusDiagnostics
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            Log.Write("gained foreground");
+        }
+
+        protected override void OnDeactivate(EventArgs e)
+        {
+            base.OnDeactivate(e);
+            Log.Write("deactivated");
+
+            // Something else is taking the foreground. Ask again once things have
+            // settled, so the log names whoever ended up in front.
+            focusWatcher.Interval = 250;
+            focusWatcher.Stop();
+            focusWatcher.Start();
+        }
+
+        private void focusWatcher_Tick(object sender, EventArgs e)
+        {
+            focusWatcher.Stop();
+            Log.Write("lost foreground to " + DescribeForegroundWindow());
+        }
+
+        private static string DescribeForegroundWindow()
+        {
+            try
+            {
+                IntPtr window = GetForegroundWindow();
+                if (window == IntPtr.Zero) { return "no foreground window"; }
+
+                uint processId;
+                GetWindowThreadProcessId(window, out processId);
+
+                var title = new StringBuilder(256);
+                GetWindowText(window, title, title.Capacity);
+
+                string name = "pid " + processId;
+                try { name = Process.GetProcessById((int)processId).ProcessName + " (pid " + processId + ")"; }
+                catch (ArgumentException) { }
+
+                return name + " \"" + title + "\"";
+            }
+            catch (Exception ex)
+            {
+                return "could not be identified: " + ex.Message;
+            }
+        }
+
+        #endregion
 
         #region LoadPresentationFromAppConfig
 
@@ -101,7 +168,28 @@ namespace GopsDailySheet
             browser.ZoomFactor = tabConfig.ZoomFactor ?? 1D;
             browser.Source = new Uri(tabConfig.Url);
             ((ISupportInitialize)(browser)).EndInit();
+            WatchBrowser(tabConfig, browser);
             return browser;
+        }
+
+        /// <summary>
+        /// Logs what the embedded browser does, so a page that opens a window or
+        /// loses its process can be told apart from the app misbehaving.
+        /// </summary>
+        private static void WatchBrowser(TabElement tabConfig, Microsoft.Web.WebView2.WinForms.WebView2 browser)
+        {
+            browser.CoreWebView2InitializationCompleted += (sender, e) =>
+            {
+                if (!e.IsSuccess)
+                {
+                    Log.Write($"browser for {tabConfig.Name} failed to start: {e.InitializationException}");
+                    return;
+                }
+
+                var started = (Microsoft.Web.WebView2.WinForms.WebView2)sender;
+                started.CoreWebView2.NewWindowRequested += (s, args) => Log.Write($"{tabConfig.Name} wants a new window: {args.Uri}");
+                started.CoreWebView2.ProcessFailed += (s, args) => Log.Write($"{tabConfig.Name} browser process failed: {args.ProcessFailedKind}, exit code {args.ExitCode}");
+            };
         }
 
         private void ReplaceFontSize(float fontSize)
