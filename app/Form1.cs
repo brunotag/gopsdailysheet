@@ -47,6 +47,22 @@ namespace GopsDailySheet
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern int GetWindowText(IntPtr window, StringBuilder text, int maxCount);
 
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr window);
+
+        [DllImport("user32.dll")]
+        private static extern bool BringWindowToTop(IntPtr window);
+
+        [DllImport("user32.dll")]
+        private static extern bool AttachThreadInput(uint attachTo, uint attachFrom, bool attach);
+
+        [DllImport("kernel32.dll")]
+        private static extern uint GetCurrentThreadId();
+
+        private static readonly int ourProcessId = Process.GetCurrentProcess().Id;
+
+        private bool alwaysFocus = false;
+
         public mainForm()
         {
             InitializeComponent();
@@ -69,16 +85,64 @@ namespace GopsDailySheet
             Log.Write("deactivated");
 
             // Something else is taking the foreground. Ask again once things have
-            // settled, so the log names whoever ended up in front.
-            focusWatcher.Interval = 250;
+            // settled, so the log names whoever ended up in front. With
+            // alwaysFocus on, keep asking, as a thief can take it more than once.
+            focusWatcher.Interval = alwaysFocus ? 1000 : 250;
             focusWatcher.Stop();
             focusWatcher.Start();
         }
 
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            if (alwaysFocus) { ReclaimForeground(); }
+        }
+
         private void focusWatcher_Tick(object sender, EventArgs e)
         {
-            focusWatcher.Stop();
-            Log.Write("lost foreground to " + DescribeForegroundWindow());
+            if (!alwaysFocus) { focusWatcher.Stop(); }
+
+            bool ours = (int)ForegroundProcessId() == ourProcessId;
+            if (!ours) { Log.Write("lost foreground to " + DescribeForegroundWindow()); }
+            if (alwaysFocus && !ours) { ReclaimForeground(); }
+        }
+
+        /// <summary>
+        /// alwaysFocus: keep the tablet on the sheet even when something else
+        /// tries to come forward. Only used when the config asks for it, as
+        /// taking the foreground back also fights our own dialogs and any
+        /// window a web page opens.
+        /// </summary>
+        private void ReclaimForeground()
+        {
+            if ((int)ForegroundProcessId() == ourProcessId) { return; }
+
+            if (WindowState == FormWindowState.Minimized) { WindowState = FormWindowState.Maximized; }
+
+            IntPtr foreground = GetForegroundWindow();
+            uint ignored;
+            uint foregroundThread = GetWindowThreadProcessId(foreground, out ignored);
+            uint ourThread = GetCurrentThreadId();
+            bool attached = foregroundThread != 0 && foregroundThread != ourThread
+                            && AttachThreadInput(foregroundThread, ourThread, true);
+            try
+            {
+                BringWindowToTop(Handle);
+                SetForegroundWindow(Handle);
+            }
+            finally
+            {
+                if (attached) { AttachThreadInput(foregroundThread, ourThread, false); }
+            }
+
+            Log.Write("took the foreground back");
+        }
+
+        private static uint ForegroundProcessId()
+        {
+            uint processId;
+            GetWindowThreadProcessId(GetForegroundWindow(), out processId);
+            return processId;
         }
 
         private static string DescribeForegroundWindow()
@@ -122,6 +186,19 @@ namespace GopsDailySheet
             var fontSize = float.Parse(ConfigurationManager.AppSettings.Get("fontSize") ?? "18");
             ReplaceFontSize(fontSize);
             lbl_version.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            alwaysFocus = IsEnabled(ConfigurationManager.AppSettings.Get("alwaysFocus"));
+            if (alwaysFocus)
+            {
+                TopMost = true;
+                Log.Write("alwaysFocus is on, holding the foreground");
+            }
+        }
+
+        private static bool IsEnabled(string setting)
+        {
+            bool enabled;
+            return bool.TryParse(setting, out enabled) && enabled;
         }
 
         private void TabControl1_Deselected(object sender, TabControlEventArgs e)

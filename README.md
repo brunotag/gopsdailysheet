@@ -49,6 +49,7 @@ the example next to it, and from then on it only ever reads the file it has.
 </tabsConfigs>
 <appSettings>
   <add key="fontSize" value="20" />
+  <add key="alwaysFocus" value="false" />
 </appSettings>
 ```
 
@@ -61,12 +62,14 @@ Each `<add>` inside `<tabs>` becomes one tab:
 | `url` | yes | Page to load |
 | `zoomFactor` | no | Zoom level, defaults to `1` |
 | `unloadOnLostFocus` | no | `true` disposes the browser when you switch away and reloads it when you come back. Use it for heavy live-tracking pages to keep memory down |
+| `switchToFirstTabAfterSeconds` | no | Any positive number of seconds this tab may stay open before the app switches back to the first tab, e.g. `30` for a tracking tab a visitor can walk away from. `-1` (the default) never switches. While the countdown runs it is shown under the version number |
 
 `appSettings`:
 
 | Key | Meaning |
 | --- | --- |
 | `fontSize` | Font size in points for the tabs and toolbar. Defaults to `18` if the key is missing |
+| `alwaysFocus` | `true` keeps the window on top and takes the foreground back when anything else tries to take it, within about a second. Defaults to `false`. Only for a tablet that must not be left on another window: it also takes the foreground back from anything a web page opens, and it fights whatever else wants the foreground |
 
 There is no machine-wide or per-user override: the copy of the config inside the app folder
 is the one that is used, which is what makes the folder portable. `app/App.config` in the repo
