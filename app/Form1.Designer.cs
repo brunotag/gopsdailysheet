@@ -41,6 +41,7 @@
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.lbl_version = new System.Windows.Forms.ToolStripLabel();
+            this.lbl_countdown = new System.Windows.Forms.ToolStripLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -90,7 +91,8 @@
             this.toolStripSeparator1,
             this.toolStripDropDownButtonPanic,
             this.toolStripSeparator2,
-            this.lbl_version});
+            this.lbl_version,
+            this.lbl_countdown});
             this.toolStrip1.Location = new System.Drawing.Point(1087, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(54, 738);
@@ -170,6 +172,12 @@
             this.lbl_version.Name = "lbl_version";
             this.lbl_version.Size = new System.Drawing.Size(51, 0);
             // 
+            // lbl_countdown
+            // 
+            this.lbl_countdown.Name = "lbl_countdown";
+            this.lbl_countdown.Size = new System.Drawing.Size(51, 0);
+            this.lbl_countdown.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
@@ -211,6 +219,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripLabel lbl_version;
+        private System.Windows.Forms.ToolStripLabel lbl_countdown;
     }
 }
 

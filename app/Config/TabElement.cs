@@ -36,5 +36,11 @@ namespace GopsDailySheet.Config
             get { return (bool?)this["unloadOnLostFocus"]; }
             set { this["unloadOnLostFocus"] = value; }
         }
+        [ConfigurationProperty("switchToFirstTabAfterSeconds", IsRequired = false, DefaultValue = -1)]
+        public int SwitchToFirstTabAfterSeconds
+        {
+            get { return (int)this["switchToFirstTabAfterSeconds"]; }
+            set { this["switchToFirstTabAfterSeconds"] = value; }
+        }
     }
 }
